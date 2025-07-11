@@ -273,6 +273,56 @@
                         </div>
                     </div>
                 </div>
+
+<!-- Weather Section -->
+<div class="container section">
+  <h3>🌦️ Weather Report (No API Key Needed)</h3>
+  <form id="weatherForm" class="row g-3">
+    <div class="col-md-6">
+      <input type="text" id="weatherLocation" class="form-control" placeholder="Enter location" required>
+    </div>
+    <div class="col-md-3">
+      <button type="submit" class="btn btn-primary">Get Weather</button>
+    </div>
+  </form>
+  <div id="weatherResult" class="mt-4"></div>
+</div>
+
+<!-- Crop Suggestion Section -->
+<div class="container section">
+  <h3>🌱 Smart Crop Suggestion (Offline/No API)</h3>
+  <form id="cropForm" class="row g-3">
+    <div class="col-md-4">
+      <input type="text" id="landType" class="form-control" placeholder="Land Type (e.g., Sandy, Clay, Loamy)" required>
+    </div>
+    <div class="col-md-4">
+      <select id="waterSource" class="form-select" required>
+        <option value="">Select Water Source</option>
+        <option>Rain</option>
+        <option>Bore</option>
+        <option>Canal</option>
+      </select>
+    </div>
+    <div class="col-md-4">
+      <select id="produceType" class="form-select" required>
+        <option value="">Choose Type</option>
+        <option>Vegetables</option>
+        <option>Crops</option>
+        <option>Fruits</option>
+        <option>Flowers</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <button type="submit" class="btn btn-success">Get Suggestion</button>
+    </div>
+  </form>
+  <div id="cropResult" class="mt-4"></div>
+</div>
+
+
+
+
+                
             </div>
 <br><br>
             <!-- Messages Section -->
@@ -725,6 +775,79 @@ function toggleShareCropForm() {
         document.getElementById('sellCropBtn').innerHTML = '<i class="fas fa-plus-circle me-2"></i>Sell Crop';
     }
 }
+
+
+        // 🌤 WEATHER USING WTTR.IN
+  document.getElementById("weatherForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    const location = document.getElementById("weatherLocation").value;
+    const resultBox = document.getElementById("weatherResult");
+    resultBox.innerHTML = "Loading weather...";
+
+    const url = `https://wttr.in/${location}?format=j1`;
+
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+
+      const current = data.current_condition[0];
+      const weatherDesc = current.weatherDesc[0].value;
+      const humidity = current.humidity;
+      const temp = current.temp_C;
+      const wind = current.windspeedKmph;
+
+      resultBox.innerHTML = `
+        <div class="card">
+          <div class="card-body">
+            <h5>Location: ${location}</h5>
+            <p><strong>Temperature:</strong> ${temp}°C</p>
+            <p><strong>Condition:</strong> ${weatherDesc}</p>
+            <p><strong>Humidity:</strong> ${humidity}%</p>
+            <p><strong>Wind Speed:</strong> ${wind} km/h</p>
+          </div>
+        </div>
+      `;
+    } catch (err) {
+      resultBox.innerHTML = `<div class="alert alert-danger">Unable to fetch weather.</div>`;
+    }
+  });
+
+  // 🌱 CROP SUGGESTION WITHOUT API
+  document.getElementById("cropForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const land = document.getElementById("landType").value.trim().toLowerCase();
+    const water = document.getElementById("waterSource").value.trim().toLowerCase();
+    const type = document.getElementById("produceType").value.trim().toLowerCase();
+    const resultBox = document.getElementById("cropResult");
+
+    let suggestions = [];
+
+    // Basic logic
+    if (type === "vegetables") {
+      if (land.includes("loam") && water === "rain") suggestions = ["Tomato", "Spinach", "Carrot"];
+      else if (land.includes("clay") && water === "bore") suggestions = ["Brinjal", "Okra", "Onion"];
+      else suggestions = ["Cabbage", "Cauliflower", "Beans"];
+    } else if (type === "crops") {
+      if (land.includes("loam") && water === "canal") suggestions = ["Wheat", "Paddy", "Maize"];
+      else if (land.includes("sandy")) suggestions = ["Millet", "Groundnut", "Sunflower"];
+      else suggestions = ["Soybean", "Barley", "Cotton"];
+    } else if (type === "fruits") {
+      if (land.includes("loam")) suggestions = ["Banana", "Papaya", "Guava"];
+      else if (land.includes("clay")) suggestions = ["Mango", "Pomegranate"];
+      else suggestions = ["Lemon", "Orange", "Custard Apple"];
+    } else if (type === "flowers") {
+      suggestions = ["Marigold", "Rose", "Jasmine"];
+    } else {
+      suggestions = ["Try checking your inputs. Valid types: Vegetables, Crops, Fruits, Flowers"];
+    }
+
+    resultBox.innerHTML = `
+      <div class="alert alert-info">
+        <strong>Suggested ${type.charAt(0).toUpperCase() + type.slice(1)}:</strong><br>
+        ${suggestions.join(", ")}
+      </div>
+    `;
+  });
 </script>
 </body>
 </html>
