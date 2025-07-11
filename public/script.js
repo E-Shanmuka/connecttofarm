@@ -1438,7 +1438,7 @@ function displayMachineryPosts(posts) {
         ` : '';
         
         const imageHtml = post.image ? 
-            `<img src="${getImageUrl(post.image)}" class="card-img-top" alt="Machinery" style="height: 200px; object-fit: cover;">` : '';
+            `<img src="${getImageUrl(post.image)}" class="card-img-top" alt="Machinery" style="height: 200px; object-fit: contain;">` : '';
         
         div.innerHTML = `
             <div class="card-body">
