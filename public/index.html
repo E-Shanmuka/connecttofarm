@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmConnect - Agricultural Trading Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#" onclick="showHome()">
+                <i class="fas fa-seedling me-2"></i>FarmConnect
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item d-none" id="navHome">
+                        <a class="nav-link" href="#" onclick="showHome()">
+                            <i class="fas fa-home me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item d-none" id="navMessages">
+                        <a class="nav-link" href="#" onclick="showMessages()">
+                            <i class="fas fa-comments me-1"></i>Messages
+                            <span id="messagesBadge" class="badge bg-danger ms-1 d-none">!</span>
+                        </a>
+                    </li>
+                    <li class="nav-item d-none" id="navWishlist">
+                        <a class="nav-link" href="#" onclick="showWishlist()">
+                            <i class="fas fa-heart me-1"></i>Wishlist
+                        </a>
+                    </li>
+                    <li class="nav-item d-none" id="navMachinery">
+                        <a class="nav-link" href="#" onclick="showMachinery()">
+                            <i class="fas fa-tractor me-1"></i>Machinery
+                        </a>
+                    </li>
+                    <li class="nav-item d-none" id="navReports">
+                        <a class="nav-link" href="#" onclick="showReports()">
+                            <i class="fas fa-flag me-1"></i>Reports
+                        </a>
+                    </li>
+                    <li class="nav-item d-none" id="navProfile">
+                        <a class="nav-link p-0" href="#" onclick="showProfile()" id="profileNavLink" style="display: flex; align-items: center;">
+                            <img id="navbarProfileImg" src="https://via.placeholder.com/32" alt="Profile" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid #fff;box-shadow:0 0 4px rgba(0,0,0,0.1);">
+                        </a>
+                    </li>
+                    <li class="nav-item d-none" id="navAdmin">
+                        <a class="nav-link" href="#" onclick="showAdmin()">
+                            <i class="fas fa-cog me-1"></i>Admin
+                        </a>
+                    </li>
+                    <li class="nav-item d-none" id="navLogout">
+                        <a class="nav-link" href="#" onclick="logout()">
+                            <i class="fas fa-sign-out-alt me-1"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid" style="margin-top: 76px;">
+        <!-- Authentication Section -->
+        <div id="authSection" class="row justify-content-center">
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-lg border-0 rounded-4">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-seedling text-success" style="font-size: 3rem;"></i>
+                            <h2 class="mt-3 text-success fw-bold">FarmConnect</h2>
+                            <p class="text-muted">Connect. Trade. Grow.</p>
+                        </div>
+
+                        <!-- Login Form -->
+                        <div id="loginForm">
+                            <h4 class="text-center mb-4">Welcome Back</h4>
+                            <form onsubmit="login(event)">
+                                <div class="mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="loginEmail" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="loginPassword" required>
+                                </div>
+                                <button type="submit" class="btn btn-success w-100 mb-3">Login</button>
+                            </form>
+                            <p class="text-center">
+                                Don't have an account? 
+                                <a href="#" class="text-success" onclick="showRegister()">Register here</a>
+                            </p>
+                        </div>
+
+                        <!-- Register Form -->
+                        <div id="registerForm" class="d-none">
+                            <h4 class="text-center mb-4">Join FarmConnect</h4>
+                            <form onsubmit="register(event)">
+                                <div class="mb-3">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="registerName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="registerEmail" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="registerPassword" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Phone</label>
+                                    <input type="tel" class="form-control" id="registerPhone" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Location</label>
+                                    <input type="text" class="form-control" id="registerLocation" required>
+                                </div>
+                                <button type="submit" class="btn btn-success w-100 mb-3">Register</button>
+                            </form>
+                            <p class="text-center">
+                                Already have an account? 
+                                <a href="#" class="text-success" onclick="showLogin()">Login here</a>
+                            </p>
+                        </div>
+
+                        <!-- OTP Verification -->
+                        <div id="otpForm" class="d-none">
+                            <h4 class="text-center mb-4">Verify Your Email</h4>
+                            <p class="text-center text-muted mb-4">Enter the 6-digit code sent to your email</p>
+                            <form onsubmit="verifyOTP(event)">
+                                <div class="mb-3">
+                                    <input type="text" class="form-control text-center" id="otpCode" 
+                                           placeholder="000000" maxlength="6" required>
+                                </div>
+                                <button type="submit" class="btn btn-success w-100">Verify</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main App Section -->
+        <div id="appSection" class="d-none">
+            <!-- Home Feed -->
+            <div id="homeSection">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <!-- Sell Crop Button -->
+                        <div class="mb-3">
+                            <button id="sellCropBtn" class="btn btn-success w-100" onclick="toggleShareCropForm()">
+                                <i class="fas fa-plus-circle me-2"></i>Sell Crop
+                            </button>
+                        </div>
+                        <!-- Create Post -->
+                        <div class="card mb-4 border-0 shadow-sm" id="shareCropCard" style="display:none;">
+                            <div class="card-body">
+                                <h5 class="card-title text-success">
+                                    <i class="fas fa-plus-circle me-2"></i>Share Your Crop
+                                </h5>
+                                <form onsubmit="createPost(event)" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Crop Name *</label>
+                                            <input type="text" class="form-control" id="cropName" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Area (acres) *</label>
+                                            <input type="number" class="form-control" id="cropArea" step="0.01" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Contact Phone *</label>
+                                            <input type="tel" class="form-control" id="cropPhone" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Location</label>
+                                            <input type="text" class="form-control" id="cropLocation">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Price (per unit)</label>
+                                            <input type="number" class="form-control" id="cropPrice" step="0.01">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Quantity Available</label>
+                                            <input type="text" class="form-control" id="cropQuantity">
+                                        </div>
+                                        <div class="col-12 mb-3">
+                                            <label class="form-label">Description</label>
+                                            <textarea class="form-control" id="cropDescription" rows="3"></textarea>
+                                        </div>
+                                        <div class="col-12 mb-3">
+                                            <label class="form-label">Upload Image</label>
+                                            <input type="file" class="form-control" id="cropImage" accept="image/*">
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-share me-2"></i>Share Post
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Search Bar -->
+                        <div class="card mb-4 border-0 shadow-sm">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-success text-white">
+                                                <i class="fas fa-search"></i>
+                                            </span>
+                                            <input type="text" class="form-control" id="searchInput" 
+                                                   placeholder="Search crops by name or location..." 
+                                                   onkeyup="handleSearch()">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <select class="form-select" id="searchFilter" onchange="handleSearch()">
+                                            <option value="all">All Crops</option>
+                                            <option value="available">Available Only</option>
+                                            <option value="sold">Sold Only</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <button class="btn btn-outline-secondary w-100" onclick="clearSearch()">
+                                            <i class="fas fa-times me-2"></i>Clear
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <small class="text-muted" id="searchResultsCount"></small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Posts Feed -->
+                        <div id="postsContainer"></div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <!-- Quick Stats -->
+                        <div class="card mb-4 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title text-success">
+                                    <i class="fas fa-chart-line me-2"></i>Platform Stats
+                                </h5>
+                                <div class="row text-center" id="platformStatsContainer">
+                                    <!-- Stats will be loaded here by JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tips -->
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title text-success">
+                                    <i class="fas fa-lightbulb me-2"></i>Farming Tips
+                                </h5>
+                                <ul class="list-unstyled" id="farmingTipsContainer">
+                                    <!-- Tips will be loaded here by JS -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+<br><br>
+            <!-- Messages Section -->
+            <div id="messagesSection" class="d-none">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-comments me-2"></i>Conversations
+                                </h5>
+                            </div>
+                            <div class="card-body p-0">
+                                <div id="conversationsList"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0" id="chatHeader">Select a conversation</h5>
+                            </div>
+                            <div class="card-body" style="height: 400px; overflow-y: auto;" id="messagesContainer">
+                                <div class="text-center text-muted">
+                                    <i class="fas fa-comments fa-3x mb-3"></i>
+                                    <p>Select a conversation to start messaging</p>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <form onsubmit="sendMessage(event)" id="messageForm" class="d-none">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="messageInput" placeholder="Type a message...">
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="fas fa-paper-plane"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wishlist Section -->
+            <div id="wishlistSection" class="d-none">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-heart me-2"></i>My Wishlist
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="wishlistContainer"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Machinery Section -->
+            <div id="machinerySection" class="d-none">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="text-success">
+                                <i class="fas fa-tractor me-2"></i>Farm Machinery
+                            </h4>
+                            <div>
+                                <button class="btn btn-success me-2" onclick="showRequestMachineryForm()">
+                                    <i class="fas fa-plus-circle me-2"></i>Request Item
+                                </button>
+                                <button class="btn btn-outline-success" onclick="showPostMachineryForm()">
+                                    <i class="fas fa-upload me-2"></i>Post Item
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Request Machinery Form -->
+                <div id="requestMachineryFormCard" class="card mb-4 border-0 shadow-sm d-none">
+                    <div class="card-body position-relative">
+                        <button type="button" class="btn-close position-absolute top-0 end-0 m-2" aria-label="Close" onclick="hideRequestMachineryForm()"></button>
+                        <h5 class="card-title text-success">
+                            <i class="fas fa-plus-circle me-2"></i>Request Machinery
+                        </h5>
+                        <form onsubmit="createMachineryRequest(event)" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Machinery Name *</label>
+                                    <input type="text" class="form-control" id="requestMachineryName" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Use/Purpose *</label>
+                                    <input type="text" class="form-control" id="requestMachineryUse" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Contact Number (Optional)</label>
+                                    <input type="tel" class="form-control" id="requestMachineryPhone">
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label class="form-label">Image (Optional)</label>
+                                    <input type="file" class="form-control" id="requestMachineryImage" accept="image/*">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-paper-plane me-2"></i>Submit Request
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Post Machinery Form -->
+                <div id="postMachineryFormCard" class="card mb-4 border-0 shadow-sm d-none">
+                    <div class="card-body position-relative">
+                        <button type="button" class="btn-close position-absolute top-0 end-0 m-2" aria-label="Close" onclick="hidePostMachineryForm()"></button>
+                        <h5 class="card-title text-success">
+                            <i class="fas fa-upload me-2"></i>Post Machinery for Sale/Rent
+                        </h5>
+                        <form onsubmit="createMachineryPost(event)" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Machinery Name *</label>
+                                    <input type="text" class="form-control" id="postMachineryName" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Use/Purpose *</label>
+                                    <input type="text" class="form-control" id="postMachineryUse" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Price *</label>
+                                    <input type="number" class="form-control" id="postMachineryPrice" step="0.01" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Contact Phone *</label>
+                                    <input type="tel" class="form-control" id="postMachineryPhone" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Status *</label>
+                                    <select class="form-select" id="postMachineryStatus" required>
+                                        <option value="available">Available</option>
+                                        <option value="out_of_stock">Out of Stock</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label class="form-label">Image (Optional)</label>
+                                    <input type="file" class="form-control" id="postMachineryImage" accept="image/*">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-share me-2"></i>Post Machinery
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Machinery Content Tabs -->
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="nav nav-tabs" id="machineryTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="requests-tab" data-bs-toggle="tab" data-bs-target="#requests" type="button" role="tab">
+                                    <i class="fas fa-hand-paper me-2"></i>Requests
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="machinery-tab" data-bs-toggle="tab" data-bs-target="#machinery" type="button" role="tab">
+                                    <i class="fas fa-tractor me-2"></i>Available Machinery
+                                </button>
+                            </li>
+                        </ul>
+                        
+                        <div class="tab-content" id="machineryTabContent">
+                            <!-- Requests Tab -->
+                            <div class="tab-pane fade show active" id="requests" role="tabpanel">
+                                <div class="card border-0 shadow-sm mt-3">
+                                    <div class="card-body">
+                                        <div id="machineryRequestsContainer"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Machinery Tab -->
+                            <div class="tab-pane fade" id="machinery" role="tabpanel">
+                                <div class="card border-0 shadow-sm mt-3">
+                                    <div class="card-body">
+                                        <div id="machineryPostsContainer"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div id="profileSection" class="d-none">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-header bg-success text-white">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-user me-2"></i>Edit Profile
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <form onsubmit="updateProfile(event)" enctype="multipart/form-data">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Full Name</label>
+                                            <input type="text" class="form-control" id="profileName" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="profileEmail" readonly>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Phone</label>
+                                            <input type="tel" class="form-control" id="profilePhone">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Location</label>
+                                            <input type="text" class="form-control" id="profileLocation">
+                                        </div>
+                                        <div class="col-12 mb-3">
+                                            <label class="form-label">Profile Picture</label>
+                                            <input type="file" class="form-control" id="profileImage" accept="image/*">
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-save me-2"></i>Update Profile
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body text-center">
+                                <img id="currentProfileImage" src="https://via.placeholder.com/150" 
+                                     class="rounded-circle mb-3" width="150" height="150">
+                                <h5 id="currentProfileName">User Name</h5>
+                                <p class="text-muted" id="currentProfileEmail">user@email.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reports Section -->
+        <div id="reportsSection" class="content-section d-none">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-flag me-2"></i>My Reports
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div id="userReportsContainer"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Section -->
+        <div id="adminSection" class="d-none">
+            <div class="row">
+                <div class="col-12">
+                    <h4 class="text-success mb-4">
+                        <i class="fas fa-cog me-2"></i>Admin Dashboard
+                    </h4>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-tractor me-2"></i>Machinery Management
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="text-center p-3">
+                                        <h3 class="text-success" id="machineryCount">0</h3>
+                                        <p class="text-muted">Total Machinery</p>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="text-center p-3">
+                                        <h3 class="text-warning" id="requestCount">0</h3>
+                                        <p class="text-muted">Pending Requests</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-success" onclick="loadAdminMachinery()">
+                                    <i class="fas fa-list me-2"></i>Manage Machinery
+                                </button>
+                                <button class="btn btn-outline-warning" onclick="loadAdminRequests()">
+                                    <i class="fas fa-hand-paper me-2"></i>Manage Requests
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-users me-2"></i>User Management
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="text-center p-3">
+                                        <h3 class="text-success" id="userCount">0</h3>
+                                        <p class="text-muted">Total Users</p>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="text-center p-3">
+                                        <h3 class="text-info" id="postCount">0</h3>
+                                        <p class="text-muted">Total Posts</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-success" onclick="loadAdminUsers()">
+                                    <i class="fas fa-users me-2"></i>Manage Users
+                                </button>
+                                <button class="btn btn-outline-info" onclick="loadAdminPosts()">
+                                    <i class="fas fa-list me-2"></i>Manage Posts
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Content Area -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0" id="adminContentTitle">Select an option above</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="adminContentContainer">
+                                <div class="text-center text-muted py-5">
+                                    <i class="fas fa-cog fa-3x mb-3"></i>
+                                    <p>Select an option from above to manage the platform</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<br><br>
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="navbar navbar-dark bg-success fixed-bottom d-md-none" id="bottomNav"
+     style="display: none !important; height: 50px; position: fixed; bottom: 0; left: 0; right: 0;">
+  <div class="container-fluid justify-content-around">
+            <a class="nav-link text-white text-center" href="#" onclick="showHome()">
+                <i class="fas fa-home d-block"></i>
+                <small>Home</small>
+            </a>
+            <a class="nav-link text-white text-center" href="#" onclick="showMessages()">
+                <i class="fas fa-comments d-block"></i>
+                <small>Messages</small>
+            </a>
+            <a class="nav-link text-white text-center" href="#" onclick="showMachinery()">
+                <i class="fas fa-tractor d-block"></i>
+                <small>Machinery</small>
+            </a>
+            <a class="nav-link text-white text-center" href="#" onclick="showProfile()">
+                <i class="fas fa-user d-block"></i>
+                <small>Profile</small>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Modals -->
+    <!-- Comments Modal -->
+    <div class="modal fade" id="commentsModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Comments</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="commentsContainer"></div>
+                    <form onsubmit="addComment(event)" class="mt-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="commentInput" placeholder="Add a comment...">
+                            <button type="submit" class="btn btn-success">Post</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Modal -->
+    <div class="modal fade" id="reportModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Report Content</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form onsubmit="submitReport(event)">
+                        <div class="mb-3">
+                            <label class="form-label">Report Type</label>
+                            <select class="form-select" id="reportType" required>
+                                <option value="">Select type</option>
+                                <option value="fraud">Fraud</option>
+                                <option value="spam">Spam</option>
+                                <option value="inappropriate">Inappropriate Content</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" id="reportDescription" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-danger">Submit Report</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.socket.io/4.7.4/socket.io.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+function toggleShareCropForm() {
+    var card = document.getElementById('shareCropCard');
+    if (card.style.display === 'none' || card.style.display === '') {
+        card.style.display = 'block';
+        document.getElementById('sellCropBtn').innerHTML = '<i class="fas fa-minus-circle me-2"></i>Hide Crop Form';
+    } else {
+        card.style.display = 'none';
+        document.getElementById('sellCropBtn').innerHTML = '<i class="fas fa-plus-circle me-2"></i>Sell Crop';
+    }
+}
+</script>
+</body>
+</html>
