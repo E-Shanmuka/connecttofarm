@@ -1359,7 +1359,7 @@ function displayMachineryRequests(requests) {
         const div = document.createElement('div');
         div.className = 'card mb-3 border-0 shadow-sm';
         const imageHtml = request.image ? 
-            `<img src="${getImageUrl(request.image)}" class="card-img-top" alt="Machinery" style="height: 200px; object-fit: cover;">` : '';
+            `<img src="${getImageUrl(request.image)}" class="card-img-top" alt="Machinery" style="height: 200px; object-fit: contain;">` : '';
         
         div.innerHTML = `
             <div class="card-body">
